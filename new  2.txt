@@ -1,0 +1,101 @@
+<?php
+session_start();
+
+if ($_SESSION['id_member']) {
+
+    //koneksi terpusat
+    include "../config/config.php";
+    $username = $_SESSION['username'];
+    ?>
+
+	<script language="javascript">
+			<!--
+			function konfirm(id_member,id_rumah)
+			{
+				tanya=confirm("Apakah anda yakin akan menghapus barang ini ?")
+				if (tanya !="0")
+				{
+					//alert(idshop);
+					//alert(iduser);
+					//alert(idpesan);
+					
+					top.location="delete-kost.php?id_member="+id_member+"&id_rumah="+id_rumah;
+				}
+			}
+			//-->
+			</script>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <?php
+                $id_member = $_SESSION['id_member'];
+                $member = mysql_fetch_array(mysql_query("select* from member "));
+
+                $nama = $member['nama'];
+                $no_hp = $member['no_hp'];
+                ?>
+<!--                 <div class="table-responsive">
+               <?php echo $nama; ?>
+                       <?php echo $no_hp; ?>
+
+
+                <div class="panel-heading">
+                    Daftar KOst
+                </div>
+                <!-- /.panel-heading -->
+             
+                <div class="panel-body">
+                    <div class="table-responsive">
+                       
+                        <table id="tabel" class="display">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>NAma Kost</th>
+                                    <th>Alamat</th>
+                                      <th>Desa</th>
+                                      <th>Kecamatan</th>
+                                     <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>				
+                                <?php
+                                include "../config/config.php";
+
+
+                                $view = mysql_query("SELECT nama_kel,nama_kec,Nama_kost,alamat_kost,id_rumah  FROM rumah_kost Nama_kost, kelurahan k, kecamatan camat
+                                    WHERE Nama_kost.id_member='$id_member' and Nama_kost.id_kelurahan=k.id_kelurahan and Nama_kost.id_kecamatan=camat.id_kecamatan");
+                                $i = 1;
+                                while ($row = mysql_fetch_array($view)) {
+                                    ?>
+                                    <tr>
+                                        <td><?php echo $i; ?></td>
+                                        <td><?php echo $row['id_rumah']; ?></td>
+                                        <td><?php echo $row['Nama_kost']; ?></td>
+                                        <td><?php echo $row['alamat_kost']; ?></td>
+                                        <td><?php echo $row['nama_kel']; ?></td>
+                                        <td><?php echo $row['nama_kec']; ?></td>
+                                        <td><button class="btn btn-success btn-xs"><i class=" fa fa-check"></i></button>
+                                            <button class="btn btn-primary btn-xs"><a href="edit-member.php?id_member=<?php echo $dataTampil['id_member']; ?>"><i class="fa fa-pencil"></i></a></button>
+                                            <button class="btn btn-danger btn-xs"> <a href="index.php?page=12&id_rumah=<?php echo $id_rumah; ?> & id_rumah=<?php echo $id_rumah; ?>"  onclick="return confirm('Anda yakin akan menghapus data Ini ?')"><i class="fa fa-trash-o "></i></a></button></td>
+                                    
+                                    </tr>
+                                    <?php
+                                    $i++;
+                                }
+                                ?> </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div><!-- /col-md-4 -->
+
+    <?php
+} else {
+    echo "<script> document.location.href='index.php?page=5&status=<font color=red>Maaf, Sebelum transaksi Anda harus daftar dan login member </font>'; </script>";
+}
+?>
+          
+
